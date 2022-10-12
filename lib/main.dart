@@ -6,30 +6,44 @@ import 'package:firebase_crud/pages/update_student_page.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
-  runApp(const MyApp());
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Firebase Crud',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: 'home',
-      routes: {
-        'home':(context) => HomePage(),
-        'addStudent':(context) => AddStudentPage(),
-        'updateStudent':(context) => UpdateStudentPage(),
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print("Something went Wrong");
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Firebase Crud',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            initialRoute: 'home',
+            routes: {
+              'home': (context) => HomePage(),
+              'addStudent': (context) => AddStudentPage(),
+              'updateStudent': (context) => UpdateStudentPage(),
+            },
+            // home: HomePage(),
+          );
+        }
+        return CircularProgressIndicator();
       },
-      // home: HomePage(),
     );
   }
 }
