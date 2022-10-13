@@ -29,11 +29,8 @@ class TextInputField extends StatelessWidget {
       onSaved: onSaved,
       obscureText: toHide,
       decoration: InputDecoration(
-        // contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        // icon: Icon(icon),
         prefixIcon: Icon(icon, size: 20),
         labelText: textName,
-        // hintText: 'emil',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),

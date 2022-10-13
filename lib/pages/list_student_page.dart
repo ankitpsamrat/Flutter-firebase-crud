@@ -1,5 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '/pages/update_student_page.dart';
 
 class StudentListPage extends StatefulWidget {
   const StudentListPage({super.key});
@@ -14,8 +17,15 @@ class _StudentListPageState extends State<StudentListPage> {
 
   //  delete user method
 
-  deleteUser() {
-    print('user deleted');
+  CollectionReference students =
+      FirebaseFirestore.instance.collection('students');
+
+  Future<void> deleteUser(id) {
+    return students
+        .doc(id)
+        .delete()
+        .then((value) => print('User deleted'))
+        .catchError((error) => print('Failed to delete : $error'));
   }
 
   @override
@@ -27,9 +37,7 @@ class _StudentListPageState extends State<StudentListPage> {
           print('Somthing went wrong');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         //  retrive data from database
@@ -38,19 +46,20 @@ class _StudentListPageState extends State<StudentListPage> {
         snapshot.data.docs.map((DocumentSnapshot document) {
           Map a = document.data() as Map<String, dynamic>;
           storedocs.add(a);
+          a['id'] = document.id;
         }).toList();
 
         return Container(
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 20,
           ),
           child: SingleChildScrollView(
-            scrollDirection: Axis.vertical, //
+            scrollDirection: Axis.vertical,
             child: Table(
               border: TableBorder.all(),
               columnWidths: const <int, TableColumnWidth>{
-                1: FixedColumnWidth(140),
+                1: FixedColumnWidth(200),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: [
@@ -59,7 +68,7 @@ class _StudentListPageState extends State<StudentListPage> {
                     TableCell(
                       child: Container(
                         color: Colors.greenAccent,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Name',
                             style: TextStyle(
@@ -73,7 +82,7 @@ class _StudentListPageState extends State<StudentListPage> {
                     TableCell(
                       child: Container(
                         color: Colors.greenAccent,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Email',
                             style: TextStyle(
@@ -87,7 +96,7 @@ class _StudentListPageState extends State<StudentListPage> {
                     TableCell(
                       child: Container(
                         color: Colors.greenAccent,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Action',
                             style: TextStyle(
@@ -107,7 +116,7 @@ class _StudentListPageState extends State<StudentListPage> {
                         child: Center(
                           child: Text(
                             storedocs[i]['name'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
                             ),
@@ -118,7 +127,7 @@ class _StudentListPageState extends State<StudentListPage> {
                         child: Center(
                           child: Text(
                             storedocs[i]['email'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
                             ),
@@ -131,18 +140,25 @@ class _StudentListPageState extends State<StudentListPage> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, 'updateStudent');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UpdateStudentPage(
+                                      id: storedocs[i]['id'],
+                                    ),
+                                  ),
+                                );
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.edit,
                                 color: Colors.orange,
                               ),
                             ),
                             IconButton(
                               onPressed: () {
-                                print(storedocs);
+                                deleteUser(storedocs[i]['id']);
                               },
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           ],
                         ),

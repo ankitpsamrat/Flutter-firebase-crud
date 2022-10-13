@@ -1,6 +1,9 @@
-import 'package:firebase_crud/common/widgets/button_widget.dart';
-import 'package:firebase_crud/common/widgets/input_field_widget.dart';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '/common/widgets/button_widget.dart';
+import '/common/widgets/input_field_widget.dart';
 
 class AddStudentPage extends StatefulWidget {
   const AddStudentPage({super.key});
@@ -26,8 +29,18 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   //  add user method
 
-  addUser() {
-    print('user added');
+  CollectionReference students =
+      FirebaseFirestore.instance.collection('students');
+
+  Future<void> addUser() {
+    return students
+        .add({
+          'name': name,
+          'email': email,
+          'password': password,
+        })
+        .then((value) => print('User added'))
+        .catchError((error) => print('Failed to add : $error'));
   }
 
   //  clear input text field method
@@ -52,7 +65,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Student'),
+        title: const Text('Add New Student'),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -60,9 +73,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextInputField(
                   inputController: nameController,
                   textInputAction: TextInputAction.next,
@@ -83,9 +96,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   textName: 'Name',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextInputField(
                   inputController: emailController,
                   textInputAction: TextInputAction.next,
@@ -93,7 +106,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     if (value!.isEmpty) {
                       return ("Please enter your email");
                     }
-                    if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                    if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(value)) {
                       return ("Please enter a valid email");
                     }
@@ -106,9 +119,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   textName: 'Email',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextInputField(
                   inputController: passwordController,
                   textInputAction: TextInputAction.done,
@@ -130,7 +143,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   textName: 'Password',
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

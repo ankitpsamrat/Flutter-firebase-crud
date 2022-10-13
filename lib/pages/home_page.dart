@@ -1,5 +1,5 @@
-import 'package:firebase_crud/pages/list_student_page.dart';
 import 'package:flutter/material.dart';
+import '/pages/list_student_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Firebase Crud'),
+            const Text('Firebase Crud'),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, 'addStudent');
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              child: Text(
+              child: const Text(
                 'Add',
                 style: TextStyle(
                   color: Colors.black,
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: StudentListPage(),
+      body: const StudentListPage(),
     );
   }
 }

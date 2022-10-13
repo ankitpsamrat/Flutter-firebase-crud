@@ -1,9 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crud/firebase_options.dart';
-import 'package:firebase_crud/pages/add_student_page.dart';
-import 'package:firebase_crud/pages/home_page.dart';
-import 'package:firebase_crud/pages/update_student_page.dart';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '/firebase_options.dart';
+import '/pages/add_student_page.dart';
+import '/pages/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,14 +36,12 @@ class MyApp extends StatelessWidget {
             ),
             initialRoute: 'home',
             routes: {
-              'home': (context) => HomePage(),
-              'addStudent': (context) => AddStudentPage(),
-              'updateStudent': (context) => UpdateStudentPage(),
+              'home': (context) => const HomePage(),
+              'addStudent': (context) => const AddStudentPage(),
             },
-            // home: HomePage(),
           );
         }
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       },
     );
   }
