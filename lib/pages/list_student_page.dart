@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'package:firebase_crud/common/widgets/delete_dailog.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/pages/update_student_page.dart';
@@ -24,8 +23,8 @@ class _StudentListPageState extends State<StudentListPage> {
     return students
         .doc(id)
         .delete()
-        .then((value) => print('User deleted'))
-        .catchError((error) => print('Failed to delete : $error'));
+        .then((value) => debugPrint('User deleted'))
+        .catchError((error) => debugPrint('Failed to delete : $error'));
   }
 
   @override
@@ -34,7 +33,7 @@ class _StudentListPageState extends State<StudentListPage> {
       stream: studentsStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
-          print('Somthing went wrong');
+          debugPrint('Somthing went wrong');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -49,126 +48,68 @@ class _StudentListPageState extends State<StudentListPage> {
           a['id'] = document.id;
         }).toList();
 
-        return Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 20,
-          ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Table(
-              border: TableBorder.all(),
-              columnWidths: const <int, TableColumnWidth>{
-                1: FixedColumnWidth(200),
-              },
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                TableRow(
+        return ListView.builder(
+          itemCount: storedocs.length,
+          itemBuilder: (BuildContext context, int index) {
+            final docs = storedocs[index];
+
+            return Card(
+              color: const Color.fromARGB(255, 206, 230, 246),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: ListTile(
+                title: Text(
+                  docs['name'],
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  docs['email'],
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                contentPadding: const EdgeInsets.only(left: 15),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    TableCell(
-                      child: Container(
-                        color: Colors.greenAccent,
-                        child: const Center(
-                          child: Text(
-                            'Name',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateStudentPage(
+                              id: docs['id'],
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                    TableCell(
-                      child: Container(
-                        color: Colors.greenAccent,
-                        child: const Center(
-                          child: Text(
-                            'Email',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        color: Colors.greenAccent,
-                        child: const Center(
-                          child: Text(
-                            'Action',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        // deleteUser(docs['id']);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DeleteDailog(
+                              deleteBtnOnTap: () {
+                                deleteUser(docs['id']);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
-                for (var i = 0; i < storedocs.length; i++) ...[
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Center(
-                          child: Text(
-                            storedocs[i]['name'],
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Center(
-                          child: Text(
-                            storedocs[i]['email'],
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UpdateStudentPage(
-                                      id: storedocs[i]['id'],
-                                    ),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.orange,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                deleteUser(storedocs[i]['id']);
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );

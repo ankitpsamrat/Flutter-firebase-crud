@@ -150,6 +150,12 @@ class _UpdateStudentPageState extends State<UpdateStudentPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Button(
+                        btnName: 'Cancel',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      Button(
                         btnName: 'Update',
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -158,12 +164,6 @@ class _UpdateStudentPageState extends State<UpdateStudentPage> {
                               Navigator.pop(context);
                             });
                           }
-                        },
-                      ),
-                      Button(
-                        btnName: 'Cancle',
-                        onPressed: () {
-                          Navigator.pop(context);
                         },
                       ),
                     ],

@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/common/widgets/button_widget.dart';
@@ -39,8 +37,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
           'email': email,
           'password': password,
         })
-        .then((value) => print('User added'))
-        .catchError((error) => print('Failed to add : $error'));
+        .then((value) => debugPrint('User added'))
+        .catchError((error) => debugPrint('Failed to add : $error'));
   }
 
   //  clear input text field method
@@ -148,7 +146,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Button(
-                    btnName: 'Register',
+                    btnName: 'Reset',
+                    onPressed: () {
+                      clearText();
+                    },
+                  ),
+                  Button(
+                    btnName: 'Add',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         setState(() {
@@ -158,13 +162,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                           addUser();
                           clearText();
                         });
+                        Navigator.pop(context);
                       }
-                    },
-                  ),
-                  Button(
-                    btnName: 'Reset',
-                    onPressed: () {
-                      clearText();
                     },
                   ),
                 ],
