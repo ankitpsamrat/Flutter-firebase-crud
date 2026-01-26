@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -55,7 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '683234921330',
     projectId: 'crud-operation-78ed4',
     authDomain: 'crud-operation-78ed4.firebaseapp.com',
-    storageBucket: 'crud-operation-78ed4.appspot.com',
+    storageBucket: 'crud-operation-78ed4.firebasestorage.app',
     measurementId: 'G-BXGEXWQ4FK',
   );
 
@@ -64,6 +61,15 @@ class DefaultFirebaseOptions {
     appId: '1:683234921330:android:433b9f7aa7e3e97e646beb',
     messagingSenderId: '683234921330',
     projectId: 'crud-operation-78ed4',
-    storageBucket: 'crud-operation-78ed4.appspot.com',
+    storageBucket: 'crud-operation-78ed4.firebasestorage.app',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCT4X2bFAiF44Gc7A4bZzy65aQMe0miuJI',
+    appId: '1:683234921330:ios:83573aff47ef8e55646beb',
+    messagingSenderId: '683234921330',
+    projectId: 'crud-operation-78ed4',
+    storageBucket: 'crud-operation-78ed4.firebasestorage.app',
+    iosBundleId: 'com.example.firebaseCrud',
   );
 }
