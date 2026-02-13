@@ -31,9 +31,7 @@ class TextInputField extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: Icon(icon, size: 20),
         labelText: textName,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }

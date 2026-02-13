@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/common/widgets/button_widget.dart';
@@ -20,34 +18,27 @@ class _UpdateStudentPageState extends State<UpdateStudentPage> {
 
   //  update user method
 
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('students');
+  CollectionReference students = FirebaseFirestore.instance.collection(
+    'students',
+  );
 
   Future<void> updateUser(id, name, email, password) {
     return students
         .doc(id)
-        .update({
-          'name': name,
-          'email': email,
-          'password': password,
-        })
-        .then((value) => print('User updated'))
-        .catchError((error) => print('Failed to update : $error'));
+        .update({'name': name, 'email': email, 'password': password})
+        .then((value) => debugPrint('User updated'))
+        .catchError((error) => debugPrint('Failed to update : $error'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Update Student'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Update Student'), elevation: 0),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
 
           //   retriving data by specific id
-
           child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             future: FirebaseFirestore.instance
                 .collection('students')
@@ -55,7 +46,7 @@ class _UpdateStudentPageState extends State<UpdateStudentPage> {
                 .get(),
             builder: (_, snapshot) {
               if (snapshot.hasError) {
-                print('Something Went Wrong');
+                debugPrint('Something Went Wrong');
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -110,8 +101,9 @@ class _UpdateStudentPageState extends State<UpdateStudentPage> {
                         if (value!.isEmpty) {
                           return ("Please enter your email");
                         }
-                        if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value)) {
+                        if (!RegExp(
+                          r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                        ).hasMatch(value)) {
                           return ("Please enter a valid email");
                         }
                         return null;

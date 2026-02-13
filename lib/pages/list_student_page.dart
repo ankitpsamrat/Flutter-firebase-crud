@@ -11,13 +11,15 @@ class StudentListPage extends StatefulWidget {
 }
 
 class _StudentListPageState extends State<StudentListPage> {
-  final Stream<QuerySnapshot> studentsStream =
-      FirebaseFirestore.instance.collection('students').snapshots();
+  final Stream<QuerySnapshot> studentsStream = FirebaseFirestore.instance
+      .collection('students')
+      .snapshots();
 
   //  delete user method
 
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('students');
+  CollectionReference students = FirebaseFirestore.instance.collection(
+    'students',
+  );
 
   Future<void> deleteUser(id) {
     return students
@@ -66,9 +68,7 @@ class _StudentListPageState extends State<StudentListPage> {
                 ),
                 subtitle: Text(
                   docs['email'],
-                  style: const TextStyle(
-                    fontSize: 15,
-                  ),
+                  style: const TextStyle(fontSize: 15),
                 ),
                 contentPadding: const EdgeInsets.only(left: 15),
                 trailing: Row(
@@ -81,9 +81,8 @@ class _StudentListPageState extends State<StudentListPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UpdateStudentPage(
-                              id: docs['id'],
-                            ),
+                            builder: (context) =>
+                                UpdateStudentPage(id: docs['id']),
                           ),
                         );
                       },

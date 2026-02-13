@@ -17,15 +17,10 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, 'addStudent');
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
               child: const Text(
                 'Add',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
+                style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             ),
           ],

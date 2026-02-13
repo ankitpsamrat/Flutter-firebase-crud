@@ -27,16 +27,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   //  add user method
 
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('students');
+  CollectionReference students = FirebaseFirestore.instance.collection(
+    'students',
+  );
 
   Future<void> addUser() {
     return students
-        .add({
-          'name': name,
-          'email': email,
-          'password': password,
-        })
+        .add({'name': name, 'email': email, 'password': password})
         .then((value) => debugPrint('User added'))
         .catchError((error) => debugPrint('Failed to add : $error'));
   }
@@ -62,10 +59,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add New Student'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Add New Student'), elevation: 0),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -104,8 +98,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     if (value!.isEmpty) {
                       return ("Please enter your email");
                     }
-                    if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value)) {
+                    if (!RegExp(
+                      r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                    ).hasMatch(value)) {
                       return ("Please enter a valid email");
                     }
                     return null;

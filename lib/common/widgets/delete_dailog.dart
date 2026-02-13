@@ -16,10 +16,7 @@ class DeleteDailog extends StatelessWidget {
           },
           child: const Text('Cancel'),
         ),
-        TextButton(
-          onPressed: deleteBtnOnTap,
-          child: const Text('Delete'),
-        ),
+        TextButton(onPressed: deleteBtnOnTap, child: const Text('Delete')),
       ],
     );
   }
